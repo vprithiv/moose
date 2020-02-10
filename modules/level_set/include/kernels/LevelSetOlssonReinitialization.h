@@ -35,4 +35,6 @@ protected:
   const bool _use_modified_reinitilization_formulation;
 
   using ADKernelGrad::getPostprocessorValue;
+
+  const ADVectorVariableValue & _grad_c;
 };

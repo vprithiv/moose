@@ -33,16 +33,9 @@ LevelSetOlssonBubble::LevelSetOlssonBubble(const InputParameters & parameters)
 }
 
 Real
-LevelSetOlssonBubble::value(Real /*t*/, const Point & p) const
+LevelSetOlssonBubble::value(Real /*t*/, const Point & z) const
 {
-  const auto x = ((p - _center).norm() - _radius) / _epsilon;
-  return 1.0 / (1 + std::exp(x));
-}
-
-ADReal
-LevelSetOlssonBubble::value(const ADReal & /*t*/, const ADPoint & p) const
-{
-  const auto x = ((p - _center).norm() - _radius) / _epsilon;
+  const Real x = ((p - _center).norm() - _radius) / _epsilon;
   return 1.0 / (1 + std::exp(x));
 }
 
@@ -61,3 +54,4 @@ LevelSetOlssonBubble::gradient(Real /*t*/, const Point & p) const
   }
   return output;
 }
+ 

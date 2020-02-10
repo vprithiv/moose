@@ -36,5 +36,5 @@ VectorDirichletBC::VectorDirichletBC(const InputParameters & parameters)
 RealVectorValue
 VectorDirichletBC::computeQpResidual()
 {
-  return _u - _values;
+  return RealVectorValue(_u(0) - _values(0), 0, 0);
 }

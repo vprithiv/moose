@@ -58,7 +58,7 @@
   type = Transient
   solve_type = PJFNK
   start_time = 0
-  num_steps = 100
+  num_steps = 1
   nl_rel_tol = 1e-8
   nl_abs_tol = 1e-10
   scheme = crank-nicolson
@@ -70,4 +70,8 @@
     optimal_iterations = 5
     growth_factor = 5
   [../]
+[]
+
+[Outputs]
+  exodus = true
 []

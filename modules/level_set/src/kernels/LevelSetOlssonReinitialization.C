@@ -25,7 +25,8 @@ LevelSetOlssonReinitialization::validParams()
       "Use the modified reinitilization formulation (Olsson et. al. (2007), section 2.2.1).");
   params.addRequiredParam<PostprocessorName>(
       "epsilon", "The epsilon coefficient to be used in the reinitialization calculation.");
-  return params;
+     params.addRequiredCoupledVar("grad_c", "The level set variable."););
+ return params;
 }
 
 LevelSetOlssonReinitialization::LevelSetOlssonReinitialization(const InputParameters & parameters)
@@ -34,14 +35,16 @@ LevelSetOlssonReinitialization::LevelSetOlssonReinitialization(const InputParame
     _epsilon(getPostprocessorValue("epsilon")),
     _use_modified_reinitilization_formulation(
         getParam<bool>("use_modified_reinitilization_formulation"))
+    _grad_c(adCoupledVectorValue("grad_c"))
 {
 }
 
 ADRealVectorValue
 LevelSetOlssonReinitialization::precomputeQpResidual()
 {
-  ADReal s = _grad_levelset_0[_qp].norm() + std::numeric_limits<ADReal>::epsilon();
-  ADRealVectorValue n_hat = _grad_levelset_0[_qp] / s;
+  // ADReal s = _grad_c[_qp].norm() + std::numeric_limits<ADReal>::epsilon();
+  // ADRealVectorValue n_hat = _grad_c[_qp] / s;
+  ADRealVectorValue n_hat = _grad_c[_qp];
   ADRealVectorValue f = _u[_qp] * (1 - _u[_qp]) * n_hat;
   if (_use_modified_reinitilization_formulation)
     return (-f + _epsilon * (_grad_u[_qp] * n_hat) * n_hat);
