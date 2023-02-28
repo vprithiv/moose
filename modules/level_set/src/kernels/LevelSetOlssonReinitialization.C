@@ -25,7 +25,7 @@ LevelSetOlssonReinitialization::validParams()
       "Use the modified reinitilization formulation (Olsson et. al. (2007), section 2.2.1).");
   params.addRequiredParam<PostprocessorName>(
       "epsilon", "The epsilon coefficient to be used in the reinitialization calculation.");
-     params.addRequiredCoupledVar("grad_c", "The level set variable."););
+  params.addRequiredCoupledVar("grad_c", "The level set variable.");
  return params;
 }
 
@@ -34,7 +34,7 @@ LevelSetOlssonReinitialization::LevelSetOlssonReinitialization(const InputParame
     _grad_levelset_0(adCoupledGradient("phi_0")),
     _epsilon(getPostprocessorValue("epsilon")),
     _use_modified_reinitilization_formulation(
-        getParam<bool>("use_modified_reinitilization_formulation"))
+        getParam<bool>("use_modified_reinitilization_formulation")),
     _grad_c(adCoupledVectorValue("grad_c"))
 {
 }

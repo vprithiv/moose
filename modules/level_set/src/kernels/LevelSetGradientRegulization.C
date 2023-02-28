@@ -9,32 +9,28 @@
 
 #include "LevelSetGradientRegulization.h"
 
-registerADMooseObject("LevelSetApp", LevelSetGradientRegulization);
+registerMooseObject("LevelSetApp", LevelSetGradientRegulization);
 
-defineADLegacyParams(LevelSetGradientRegulization);
-
-template <ComputeStage compute_stage>
 InputParameters
-LevelSetGradientRegulization<compute_stage>::validParams()
+LevelSetGradientRegulization::validParams()
 {
-  InputParameters params = ADVectorKernel<compute_stage>::validParams();
+  InputParameters params = ADVectorKernel::validParams();
   params.addRequiredCoupledVar("c", "Level set variable");
   params.addParam<bool>("normal_regulization", false, "Level set variable");
   return params;
 }
 
-template <ComputeStage compute_stage>
-LevelSetGradientRegulization<compute_stage>::LevelSetGradientRegulization(
+LevelSetGradientRegulization::LevelSetGradientRegulization(
     const InputParameters & parameters)
-  : ADVectorKernel<compute_stage>(parameters),
+  : ADVectorKernel(parameters),
     _grad_c(adCoupledGradient("c")),
     _normal_regulization(getParam<bool>("normal_regulization"))
 {
 }
 
-template <ComputeStage compute_stage>
+
 ADReal
-LevelSetGradientRegulization<compute_stage>::computeQpResidual()
+LevelSetGradientRegulization::computeQpResidual()
 {
   if (!_normal_regulization)
     return _test[_i][_qp] * (_u[_qp] - _grad_c[_qp]);
@@ -47,5 +43,3 @@ LevelSetGradientRegulization<compute_stage>::computeQpResidual()
   }
 }
 
-template class LevelSetGradientRegulization<RESIDUAL>;
-template class LevelSetGradientRegulization<JACOBIAN>;

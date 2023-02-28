@@ -19,10 +19,6 @@
   uniform_refine = 1
 []
 
-[GlobalParams]
-  gravity = '0 -0.98 0'
-[]
-
 [AuxVariables]
   [vel_x]
   []
@@ -100,10 +96,6 @@
     variable = curvature
     epsilon = 0.002
   [../]
-  [./force]
-    type = INSADMomentumForces
-    variable = velocity
-  [../]
   [./momentum_time]
     type = INSADMomentumTimeDerivative
     variable = velocity
@@ -154,20 +146,17 @@
   [../]
   [./advection]
     type = LevelSetAdvection
-    velocity_x = vel_x
-    velocity_y = vel_y
+    velocity = velocity
     variable = phi
   [../]
   [./advection_supg]
     type = LevelSetAdvectionSUPG
-    velocity_x = vel_x
-    velocity_y = vel_y
+    velocity = velocity
     variable = phi
   [../]
   [./time_supg]
     type = LevelSetTimeDerivativeSUPG
-    velocity_x = vel_x
-    velocity_y = vel_y
+    velocity = velocity
     variable = phi
   [../]
 []
@@ -220,8 +209,6 @@
     type = INSADTauMaterial
     velocity = velocity
     pressure = p
-    transient_term = true
-    integrate_p_by_parts = true
     alpha = .1
   []
 []
@@ -237,8 +224,7 @@
 [Postprocessors]
   [./cfl]
     type = LevelSetCFLCondition
-    velocity_x = vel_x
-    velocity_y = vel_y
+    velocity = velocity    
     execute_on = 'initial timestep_end'
   [../]
   [./area]

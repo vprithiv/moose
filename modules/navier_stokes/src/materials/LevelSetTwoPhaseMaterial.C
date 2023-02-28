@@ -8,16 +8,20 @@
 
 registerADMooseObject("NavierStokesApp", LevelSetTwoPhaseMaterial);
 
-defineADValidParams(
-    LevelSetTwoPhaseMaterial, ADMaterial, params.addRequiredCoupledVar("phi", "Level set variable");
-    params.addRequiredParam<MaterialPropertyName>("prop_name", "Name of material property.");
-    params.addRequiredParam<Real>("prop_value_1", "value of phase 1.");
-    params.addRequiredParam<Real>("prop_value_2", "value of phase 2."););
+InputParameters
+LevelSetTwoPhaseMaterial::validParams()
+{
+  InputParameters params = ADMaterial::validParams();
+  params.addRequiredCoupledVar("phi", "Level set variable");
+  params.addRequiredParam<MaterialPropertyName>("prop_name", "Name of material property.");
+  params.addRequiredParam<Real>("prop_value_1", "value of phase 1.");
+  params.addRequiredParam<Real>("prop_value_2", "value of phase 2.");
+  return params;
+}
 
-template <ComputeStage compute_stage>
-LevelSetTwoPhaseMaterial<compute_stage>::LevelSetTwoPhaseMaterial(
+LevelSetTwoPhaseMaterial::LevelSetTwoPhaseMaterial(
     const InputParameters & parameters)
-  : ADMaterial<compute_stage>(parameters),
+  : ADMaterial(parameters),
     _phi(adCoupledValue("phi")),
     _prop_value_1(getParam<Real>("prop_value_1")),
     _prop_value_2(getParam<Real>("prop_value_2")),
@@ -25,9 +29,9 @@ LevelSetTwoPhaseMaterial<compute_stage>::LevelSetTwoPhaseMaterial(
 {
 }
 
-template <ComputeStage compute_stage>
+
 void
-LevelSetTwoPhaseMaterial<compute_stage>::computeQpProperties()
+LevelSetTwoPhaseMaterial::computeQpProperties()
 {
   _prop[_qp] = _prop_value_1 + (_prop_value_2 - _prop_value_1) * _phi[_qp];
 }

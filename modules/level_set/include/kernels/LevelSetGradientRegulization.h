@@ -10,14 +10,7 @@
 #pragma once
 
 #include "ADVectorKernel.h"
-
-template <ComputeStage>
-class LevelSetGradientRegulization;
-
-declareADValidParams(LevelSetGradientRegulization);
-
-template <ComputeStage compute_stage>
-class LevelSetGradientRegulization : public ADVectorKernel<compute_stage>
+class LevelSetGradientRegulization : public ADVectorKernel
 {
 public:
   static InputParameters validParams();
@@ -31,5 +24,4 @@ protected:
 
   const bool _normal_regulization;
 
-  usingVectorKernelMembers;
 };

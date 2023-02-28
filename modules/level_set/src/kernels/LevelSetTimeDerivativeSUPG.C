@@ -29,11 +29,10 @@ LevelSetTimeDerivativeSUPG::LevelSetTimeDerivativeSUPG(const InputParameters & p
 ADRealVectorValue
 LevelSetTimeDerivativeSUPG::precomputeQpResidual()
 {
-  computeQpVelocity();
   ADReal tau;
-  if (_velocity.norm() > 1.0e-10)
-    tau = _current_elem->hmin() / (2 * _velocity.norm());
+  if (_velocity[_qp].norm() > 1.0e-10)
+    tau = _current_elem->hmin() / (2 * _velocity[_qp].norm());
   else
     tau = 0.0;
-  return tau * _velocity * _u_dot[_qp];
+  return tau * _velocity[_qp] * _u_dot[_qp];
 }

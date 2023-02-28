@@ -10,25 +10,29 @@
 // MOOSE includes
 #include "LevelSetCurvatureRegulization.h"
 
-registerADMooseObject("LevelSetApp", LevelSetCurvatureRegulization);
+registerMooseObject("LevelSetApp", LevelSetCurvatureRegulization);
 
-defineADValidParams(LevelSetCurvatureRegulization,
-                    ADKernel,
-                    params.addRequiredCoupledVar("grad_c", "The level set variable.");
-                    params.addRequiredParam<Real>("epsilon", "The epsilon coefficient."););
+InputParameters
+LevelSetCurvatureRegulization::validParams()
+{
+  InputParameters params = ADKernel::validParams();
+  params.addClassDescription("smoothes the curvature");
+  params.addRequiredCoupledVar("grad_c", "The level set variable.");
+  params.addRequiredParam<Real>("epsilon", "The epsilon coefficient.");
+  return params;
+}
 
-template <ComputeStage compute_stage>
-LevelSetCurvatureRegulization<compute_stage>::LevelSetCurvatureRegulization(
+LevelSetCurvatureRegulization::LevelSetCurvatureRegulization(
     const InputParameters & parameters)
-  : ADKernel<compute_stage>(parameters),
+  : ADKernel(parameters),
     _grad_c(adCoupledVectorValue("grad_c")),
     _epsilon(getParam<Real>("epsilon"))
 {
 }
 
-template <ComputeStage compute_stage>
+
 ADReal
-LevelSetCurvatureRegulization<compute_stage>::computeQpResidual()
+LevelSetCurvatureRegulization::computeQpResidual()
 {
   ADReal s = std::numeric_limits<ADReal>::epsilon();
   ADRealVectorValue n(0, 0, 0);

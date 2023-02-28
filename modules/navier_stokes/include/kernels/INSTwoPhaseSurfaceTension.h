@@ -10,19 +10,10 @@
 
 #include "ADKernelValue.h"
 
-// Forward Declarations
-template <ComputeStage>
-class INSTwoPhaseSurfaceTension;
-
-declareADValidParams(INSTwoPhaseSurfaceTension);
-
-/**
- *
- */
-template <ComputeStage compute_stage>
-class INSTwoPhaseSurfaceTension : public ADVectorKernelValue<compute_stage>
+class INSTwoPhaseSurfaceTension : public ADVectorKernelValue
 {
 public:
+  static InputParameters validParams();  
   INSTwoPhaseSurfaceTension(const InputParameters & parameters);
 
 protected:
@@ -31,6 +22,4 @@ protected:
   const ADVectorVariableValue & _grad_c;
   const ADVariableValue & _curvature;
   const Real _sigma;
-
-  usingVectorKernelValueMembers;
 };

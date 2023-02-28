@@ -10,25 +10,18 @@
 
 #define usingLevelSetTwoPhaseMateriallMembers usingMaterialMembers;
 
-template <ComputeStage>
-class LevelSetTwoPhaseMaterial;
-
-declareADValidParams(LevelSetTwoPhaseMaterial);
-
-template <ComputeStage compute_stage>
-class LevelSetTwoPhaseMaterial : public ADMaterial<compute_stage>
+class LevelSetTwoPhaseMaterial : public ADMaterial
 {
 public:
+  static InputParameters validParams();
   LevelSetTwoPhaseMaterial(const InputParameters & parameters);
 
 protected:
   virtual void computeQpProperties() override;
 
   const ADVariableValue & _phi;
-
   const Real _prop_value_1;
   const Real _prop_value_2;
-  ADMaterialProperty(Real) & _prop;
+  ADMaterialProperty<Real> & _prop;
 
-  usingMaterialMembers;
 };

@@ -9,28 +9,31 @@
 
 #include "INSTwoPhaseSurfaceTension.h"
 
-registerADMooseObject("NavierStokesApp", INSTwoPhaseSurfaceTension);
+registerMooseObject("NavierStokesApp", INSTwoPhaseSurfaceTension);
 
-defineADValidParams(INSTwoPhaseSurfaceTension,
-                    ADVectorKernelValue,
-                    params.addRequiredCoupledVar("grad_c",
-                                                 "Regularized gradient of Level set variable");
-                    params.addRequiredCoupledVar("curvature", "Level set variable");
-                    params.addRequiredParam<Real>("sigma", "surface tension coefficient."););
+InputParameters
+INSTwoPhaseSurfaceTension::validParams()
+{
+  InputParameters params = ADKernelValue::validParams();
+  params.addRequiredCoupledVar("grad_c",
+                                "Regularized gradient of Level set variable");
+  params.addRequiredCoupledVar("curvature", "Level set variable");
+  params.addRequiredParam<Real>("sigma", "surface tension coefficient.");
+  return params;
+}
 
-template <ComputeStage compute_stage>
-INSTwoPhaseSurfaceTension<compute_stage>::INSTwoPhaseSurfaceTension(
+INSTwoPhaseSurfaceTension::INSTwoPhaseSurfaceTension(
     const InputParameters & parameters)
-  : ADVectorKernelValue<compute_stage>(parameters),
+  : ADVectorKernelValue(parameters),
     _grad_c(adCoupledVectorValue("grad_c")),
     _curvature(adCoupledValue("curvature")),
     _sigma(getParam<Real>("sigma"))
 {
 }
 
-template <ComputeStage compute_stage>
+
 ADRealVectorValue
-INSTwoPhaseSurfaceTension<compute_stage>::precomputeQpResidual()
+INSTwoPhaseSurfaceTension::precomputeQpResidual()
 {
   // ADReal curvature =
   //     -_second_c[_qp].tr() / _grad_c[_qp].norm() +

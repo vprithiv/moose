@@ -12,19 +12,11 @@
 // MOOSE includes
 #include "ADKernel.h"
 
-// Forward declarations
-template <ComputeStage>
-class LevelSetCurvatureRegulization;
 
-declareADValidParams(LevelSetCurvatureRegulization);
-
-/**
- *
- */
-template <ComputeStage compute_stage>
-class LevelSetCurvatureRegulization : public ADKernel<compute_stage>
+class LevelSetCurvatureRegulization : public ADKernel
 {
 public:
+  static InputParameters validParams();
   LevelSetCurvatureRegulization(const InputParameters & parameters);
 
 protected:
@@ -34,5 +26,4 @@ protected:
 
   const Real _epsilon;
 
-  usingKernelMembers;
 };
