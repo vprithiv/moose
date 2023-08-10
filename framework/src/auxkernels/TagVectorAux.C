@@ -11,9 +11,8 @@
 
 registerMooseObject("MooseApp", TagVectorAux);
 
-template <typename T>
 InputParameters
-TagVectorAuxTempl<T>::validParams()
+TagVectorAux::validParams()
 {
   InputParameters params = TagAuxBase<AuxKernel>::validParams();
   params.addRequiredParam<TagName>("vector_tag", "Tag Name this Aux works on");
@@ -21,21 +20,16 @@ TagVectorAuxTempl<T>::validParams()
   return params;
 }
 
-template <typename T>
-TagVectorAuxTempl<T>::TagVectorAuxTempl(const InputParameters & parameters)
-  : TagAuxBase<AuxKernelTempl<T>>(parameters),
-    _v(this->template vectorTagValueHelper<T>("v", "vector_tag")),
-    _v_var(*this->getFieldVar("v", 0))
+TagVectorAux::TagVectorAux(const InputParameters & parameters)
+  : TagAuxBase<AuxKernel>(parameters),
+    _v(coupledVectorTagValue("v", "vector_tag")),
+    _v_var(*getFieldVar("v", 0))
 {
-  this->checkCoupledVariable(&_v_var, &_var);
+  checkCoupledVariable(&_v_var, &_var);
 }
 
-template <typename T>
-T
-TagVectorAuxTempl<T>::computeValue()
+Real
+TagVectorAux::computeValue()
 {
-  return _v[_qp] / (_scaled ? 1.0 : _v_var.scalingFactor());
+  return _scaled ? _v[_qp] : _v[_qp] / _v_var.scalingFactor();
 }
-
-template class TagVectorAuxTempl<Real>;
-template class TagVectorAuxTempl<RealVectorValue>;

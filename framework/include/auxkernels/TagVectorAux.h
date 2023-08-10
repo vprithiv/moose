@@ -16,24 +16,16 @@
  * The value of a tagged vector for a given node and a given variable is coupled to
  * the current AuxVariable. TagVectorAux returns the coupled nodal value.
  */
-template <typename T>
-class TagVectorAuxTempl : public TagAuxBase<AuxKernelTempl<T>>
+class TagVectorAux : public TagAuxBase<AuxKernel>
 {
 public:
   static InputParameters validParams();
 
-  TagVectorAuxTempl(const InputParameters & parameters);
+  TagVectorAux(const InputParameters & parameters);
 
 protected:
-  virtual T computeValue() override;
+  virtual Real computeValue() override;
 
-  const typename OutputTools<T>::VariableValue & _v;
+  const VariableValue & _v;
   const MooseVariableBase & _v_var;
-
-  using TagAuxBase<AuxKernelTempl<T>>::_qp;
-  using TagAuxBase<AuxKernelTempl<T>>::_var;
-  using TagAuxBase<AuxKernelTempl<T>>::_scaled;
 };
-
-typedef TagVectorAuxTempl<Real> TagVectorAux;
-typedef TagVectorAuxTempl<RealVectorValue> VectorTagVectorAux;
