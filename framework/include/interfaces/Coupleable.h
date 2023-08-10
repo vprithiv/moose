@@ -304,6 +304,10 @@ protected:
                                                       const std::string & tag_name,
                                                       unsigned int index = 0) const;
 
+  virtual const VectorVariableValue & coupledVectorTagVectorValue(const std::string & var_names,
+                                                      const std::string & tag_name,
+                                                      unsigned int index = 0) const;
+
   /**
    * Returns the values for all the coupled variables desired for a given tag
    * @param var_names Name(s) of coupled variable(s)
@@ -1414,7 +1418,6 @@ protected:
   bool
   checkVar(const std::string & var_name, unsigned int comp = 0, unsigned int comp_bound = 0) const;
 
-private:
   /**
    * Generic helper method to get vector tag values based on tag ID
    */
@@ -1429,6 +1432,8 @@ private:
   const typename OutputTools<T>::VariableValue & vectorTagValueHelper(const std::string & var_names,
                                                                       const std::string & tag_name,
                                                                       unsigned int index = 0) const;
+
+private:
 
   /**
    * Generic helper method to get vector tag degree of freedom values based on tag ID

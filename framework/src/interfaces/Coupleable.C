@@ -2604,3 +2604,8 @@ template const Real & Coupleable::coupledNodalDot<Real>(const std::string & var_
                                                         unsigned int comp) const;
 template const RealVectorValue &
 Coupleable::coupledNodalDot<RealVectorValue>(const std::string & var_name, unsigned int comp) const;
+
+template const typename OutputTools<RealVectorValue>::VariableValue &
+Coupleable::vectorTagValueHelper<RealVectorValue>(const std::string &, TagID, unsigned int) const;
+template const typename OutputTools<RealVectorValue>::VariableValue &
+Coupleable::vectorTagValueHelper<RealVectorValue>(const std::string &, const std::string &, unsigned int) const;
