@@ -49,8 +49,8 @@ TwoPhaseADMomentumViscous::precomputeQpResidual()
   proj = iden - proj;
 
   ADRankTwoTensor tau = _mu[_qp] * (_grad_u[_qp] + _grad_u[_qp].transpose());
-  ADRankTwoTensor tau_phi =_sigma*delta*proj;
-//   return tau+tau_phi;
-  return tau_phi;
+  ADRankTwoTensor tau_phi =_sigma*delta*proj*grad_c_norm;
+  return tau+tau_phi;
+//   return tau_phi;
 
 }
