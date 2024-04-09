@@ -186,13 +186,14 @@ TensileStressUpdate::initializeVarsV(const std::vector<Real> & trial_stress_para
     stress_params[0] = std::min(stress_params[0], ts);
     gaE = trial_stress_params[2] - stress_params[2];
   }
-  setIntnlValuesV(trial_stress_params, stress_params, intnl_old, intnl);
+  setIntnlValuesV(trial_stress_params, stress_params, intnl_old, gaE, intnl);
 }
 
 void
 TensileStressUpdate::setIntnlValuesV(const std::vector<Real> & trial_stress_params,
                                      const std::vector<Real> & current_stress_params,
                                      const std::vector<Real> & intnl_old,
+                                     const Real  /*gaE_value*/,
                                      std::vector<Real> & intnl) const
 {
   intnl[0] = intnl_old[0] + (trial_stress_params[2] - current_stress_params[2]) / _Eij[2][2];

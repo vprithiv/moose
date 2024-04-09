@@ -332,7 +332,7 @@ MultiParameterPlasticityStressUpdate::updateState(RankTwoTensor & strain_increme
       std::copy(_current_sp.begin(), _current_sp.end(), _ok_sp.begin());
       gaE_total += gaE;
       step_taken += step_size;
-      setIntnlValuesV(_trial_sp, _ok_sp, _ok_intnl, _intnl[_qp]);
+      setIntnlValuesV(_trial_sp, _ok_sp, _ok_intnl, gaE_total, _intnl[_qp]);
       std::copy(_intnl[_qp].begin(), _intnl[_qp].end(), _ok_intnl.begin());
       // calculate dp/dp_trial, dp/dq_trial, etc, for Jacobian
       dVardTrial(!smoothed_q_calculated,
@@ -580,7 +580,7 @@ MultiParameterPlasticityStressUpdate::lineSearch(Real & res2,
     gaE = gaE_old + lam * delta_nr_params[_num_sp];
 
     // and internal parameters
-    setIntnlValuesV(trial_stress_params, stress_params, intnl_ok, intnl);
+    setIntnlValuesV(trial_stress_params, stress_params, intnl_ok, gaE, intnl);
 
     smoothed_q = smoothAllQuantities(stress_params, intnl);
 

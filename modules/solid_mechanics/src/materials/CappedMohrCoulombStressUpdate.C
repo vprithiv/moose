@@ -730,13 +730,14 @@ CappedMohrCoulombStressUpdate::initializeVarsV(const std::vector<Real> & trial_s
                    stress_params[0]);
     }
   }
-  setIntnlValuesV(trial_stress_params, stress_params, intnl_old, intnl);
+  setIntnlValuesV(trial_stress_params, stress_params, intnl_old, gaE, intnl);
 }
 
 void
 CappedMohrCoulombStressUpdate::setIntnlValuesV(const std::vector<Real> & trial_stress_params,
                                                const std::vector<Real> & current_stress_params,
                                                const std::vector<Real> & intnl_old,
+                                               const Real  /*gaE_value*/,
                                                std::vector<Real> & intnl) const
 {
   // intnl[0] = shear, intnl[1] = tensile
